@@ -1,0 +1,14 @@
+This directory contains 6 subdirectories each including one example. 
+The examples included are:
+
+1) explicit: a simple 2 dimensional system of ODEs with an explicit Euler step function
+2) implicit: the same example provided in explicit but now with an implicit Euler step function
+3) implicit_mkl: the same example provided in explicit and implict but now using the intel math library to solve
+the linear system required in the implicit Euler step function
+4) reaction_diffusion: a method of lines solution of a reaction-diffusion system of PDEs, using an explicit
+Euler time stepper
+5) brusselator_gsl: a backward Euler step function for the nonlinear Brusselator system.  The implicit Euler
+step is computed using a Newton iteration and the gsl library to solve the Jacobian system for the Newton step.
+6) brusselator_mkl: a backward Euler step function for the nonlinear Brusselator system.  The implicit Euler
+step is computed using a Newton iteration and the intel math library to solve the Jacobian system for the Newton step.
+

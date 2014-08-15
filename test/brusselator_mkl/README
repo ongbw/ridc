@@ -1,0 +1,22 @@
+An implicit Euler step function the nonlinear Brusselator system 
+using Newton's method and the intel math libary.  This code assumes 
+an existing, properly configured Intel Math Kernel Library (MKL),
+which is a non-pubic domain software.
+
+Edit the Makefile to change how the Intel Math Kernel library is linked.
+
+
+Makefile: type make to compile the code, this produces brusselator.exe.  
+Fourth order RIDC with 10000 time steps can be run by:
+
+$./brusselator.exe 4 10000
+
+ode.h: header file which defines the PARAMETER structure and declares the 
+	functions defined in ode.cpp
+ode.cpp: initializes the PARAMETER structure, and defines functions for 
+	the initial condition and the right hand side of the ODE system.
+run.sh: shell script to run the executable for different numbers of time 
+	steps for a convergence study.
+convergence.m: matlab or octave script which uses the data produced by 
+	run.sh to estimate the order of convergence.
+reference/: reference solutions for the brusselator
