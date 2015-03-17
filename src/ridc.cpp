@@ -84,7 +84,7 @@ void ridc_fe(int order, PARAMETER param, double *sol) {
   }
 
   // compute f[0][0]
-  rhs(param.ti, u[0][0], param, f[0][0]);
+  rhs<PARAMETER>(param.ti, u[0][0], param, f[0][0]);
 
   // copy initial condition for each RIDC level
   for (int j=1;j<order;j++){
@@ -193,9 +193,9 @@ void ridc_fe(int order, PARAMETER param, double *sol) {
 	  double t = param.ti + (ii[p])*dt;
 	  if (p==0) {
 	    // this is the prediction step
-	    step(t, u[0][index_into_array], param, unew[0]);
+	    step<PARAMETER>(t, u[0][index_into_array], param, unew[0]);
 	    // populate memory stencil for f (needed for order > 1)
-	    rhs(t+dt, unew[0], param, fnew[0]);
+	    rhs<PARAMETER>(t+dt, unew[0], param, fnew[0]);
 
 	  } else {
 	    int index_sth = min(ii[p], p-1);
@@ -206,7 +206,7 @@ void ridc_fe(int order, PARAMETER param, double *sol) {
 
 	    // populate memory stencil if not the last correction loop
 	    if (p < (order-1) ) {
-	      rhs(t+dt, unew[p], param, fnew[p]);
+	      rhs<PARAMETER>(t+dt, unew[p], param, fnew[p]);
 	    }
 	  }
 	  ii[p]++;
@@ -391,7 +391,7 @@ void ridc_be(int order, PARAMETER param, double *sol) {
   }
   
   // compute f[0][0]
-  rhs(param.ti, u[0][0], param, f[0][0]);
+  rhs<PARAMETER>(param.ti, u[0][0], param, f[0][0]);
   
   // copy initial condition for each RIDC level
   for (int j=1;j<order;j++){
@@ -502,9 +502,9 @@ void ridc_be(int order, PARAMETER param, double *sol) {
 	  double t = param.ti + (ii[p])*dt;
 	  if (p==0) {
 	    // this is the prediction step
-	    step(t, u[0][index_into_array], param, unew[0]);
+	    step<PARAMETER>(t, u[0][index_into_array], param, unew[0]);
 	    // populate memory stencil for f
-	    rhs(t+dt, unew[0], param, fnew[0]);
+	    rhs<PARAMETER>(t+dt, unew[0], param, fnew[0]);
 	  } else {
 	    int index_sth = min(ii[p], p-1);
 
@@ -514,7 +514,7 @@ void ridc_be(int order, PARAMETER param, double *sol) {
 
 	    // populate memory stencil if not the last correction loop
 	    if (p < (order-1) ) {
-	      rhs(t+dt, unew[p], param, fnew[p]);
+	      rhs<PARAMETER>(t+dt, unew[p], param, fnew[p]);
 	    }
 	  }
 	  ii[p]++;
@@ -852,7 +852,7 @@ void corr_fe(double * uold,
 	     PARAMETER param,
 	     double * unew) {
 
-  step(t, uold, param, unew);
+  step<PARAMETER>(t, uold, param, unew);
 
 
   // forward euler update
@@ -910,6 +910,6 @@ void corr_be(double * uold,
     }
   }
 
-  step(t, uold, param, unew);
+  step<PARAMETER>(t, uold, param, unew);
 
 } // end corr_be

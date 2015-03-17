@@ -1,14 +1,14 @@
 #include "ridc.h"
 #include <stdio.h>
 
-template <class PARAMTER>
+template <>
 void rhs(double t, double *u, PARAMETER param, double *f) {
   for (int i =0; i<param.neq; i++) {
       f[i]=-(i+1)*t*u[i];
   }
 }
 
-template <class PARAMETER>
+template <>
 void step(double t, double* u, PARAMETER param, double* unew) {
 
   double* fold = new double[param.neq];
