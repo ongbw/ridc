@@ -1,5 +1,4 @@
 #include "ridc.h"
-#include "ridc_utils.h"
 
 #include <stdio.h>
 
@@ -16,6 +15,7 @@ using namespace std;
 // Inputs:
 //	   int order, order of integrator
 //	   param, problem parameters
+//         sol, initial condition
 //
 ///////////////////////////////////////////////////////
 // Outputs: (by reference)
@@ -23,7 +23,7 @@ using namespace std;
 //
 ///////////////////////////////////////////////////////
 // Functions Called: corr_fe, integration matrices,
-//    initial_condition
+//    
 //
 ///////////////////////////////////////////////////////
 // Called By: none
@@ -79,15 +79,19 @@ void ridc_fe(int order, PARAMETER param, double *sol) {
   }
 
   // get initial condition
-  initial_condition(param, u[0][0]);
+  for (int i = 0; i<param.neq;i++) {
+    u[0][0][i] = sol[i];
+  }
 
   // compute f[0][0]
   rhs(param.ti, u[0][0], param, f[0][0]);
 
   // copy initial condition for each RIDC level
   for (int j=1;j<order;j++){
-    copy_vect(u[j-1][0],u[j][0],param.neq);
-    copy_vect(f[j-1][0],f[j][0],param.neq);
+    for (int i = 0; i<param.neq;i++) {
+      u[j][0][i]=u[0][0][i];
+      f[j][0][i]=f[0][0][i];
+    }
   }
 
   // variable containing flag for whether to shift memory in stencil
@@ -382,18 +386,25 @@ void ridc_be(int order, PARAMETER param, double *sol) {
   }
 
   // get initial condition
-  initial_condition(param, u[0][0]);
-
+  for (int i = 0; i<param.neq;i++) {
+    u[0][0][i] = sol[i];
+  }
+  
   // compute f[0][0]
   rhs(param.ti, u[0][0], param, f[0][0]);
-
+  
   // copy initial condition for each RIDC level
   for (int j=1;j<order;j++){
-    copy_vect(u[j-1][0],u[j][0],param.neq);
-    copy_vect(f[j-1][0],f[j][0],param.neq);
+    // copy initial condition for each RIDC level
+    for (int j=1;j<order;j++){
+      for (int i = 0; i<param.neq;i++) {
+	u[j][0][i]=u[0][0][i];
+	f[j][0][i]=f[0][0][i];
+      }
+    }
   }
-
-    // flag for whether to shift memory in stencil
+  
+  // flag for whether to shift memory in stencil
   bool *doMemShift = new bool[order];
 
   // flag for whether the node is able to compute the next step for
@@ -644,7 +655,7 @@ void lagrange_coeff(double *x, int Nx, int i, double *L) {
   double denom=1; // denominator for the coefficients
 
   // allocate memory, temporary storage variables
-  double c[Nx];
+  double * c = new double[Nx];
 
   // set p(x) = 1
   c[0] = 1;
@@ -677,6 +688,7 @@ void lagrange_coeff(double *x, int Nx, int i, double *L) {
     L[l] = L[l]/denom;
   }
 
+  delete [] c;
 } // end lagrange_coeff
 
 
@@ -752,12 +764,11 @@ void integration_matrices(int N, double **S) {
 
   int i; // counter
   int j; // counter
-  int k; // index
 
-  double x[N];
+  double * x = new double [N];
 
   // allocate memory, temporary storage variables
-  double L[N];
+  double * L = new double [N];
 
   init_unif_nodes(x,N,0,1);
 
@@ -768,6 +779,8 @@ void integration_matrices(int N, double **S) {
     }
   }
 
+  delete [] x;
+  delete [] L;
 } // end integration_matrices
 
 

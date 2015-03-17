@@ -1,3 +1,0 @@
-This directory contains the source files for the RIDC parallel
-in time integrator.  These files do not need to be edited to run the
-test examples in ../test or even to add your own examples.

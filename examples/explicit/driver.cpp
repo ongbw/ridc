@@ -4,7 +4,6 @@
 #include <stdio.h>
 
 #include "ridc.h"
-#include "ode.h"
 
 int main(int argc, char *argv[]) {
   int order, nt;
@@ -19,20 +18,25 @@ int main(int argc, char *argv[]) {
     nt = atoi(argv[2]); // number of time steps
   }
 
-  // initialize parameters from problem
+
+  
+  // initialize parameters for problem
   PARAMETER param;
-  init_params(nt, param);
+  param.ti = 0;
+  param.tf = 1;
+  param.dt = (double)(param.tf - param.ti)/nt;
+  param.neq = 2; // some neq
+  param.nt = nt;
+
 
   sol = new double[param.neq];
+  // initial condition
+  for (int i =0; i<param.neq; i++) {
+    sol[i]=1.0;
+  }
 
-  // select appropriate functions based on compilation flag
-#if EXPLICIT
+
   ridc_fe(order, param, sol);
-#elif IMPLICIT
-  ridc_be(order, param, sol);
-#else
-#error Neither IMPLICIT nor EXPLICIT flags are set!
-#endif
 
   // output solution to screen
   for (int i = 0; i < param.neq; i++)
