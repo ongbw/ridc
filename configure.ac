@@ -23,6 +23,7 @@ AC_SUBST([LIBS])
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_FILES([src/Makefile])
 AC_CONFIG_FILES([examples/explicit/Makefile])
+AC_CONFIG_FILES([examples/implicit/Makefile])
 
 
 ######################################################################

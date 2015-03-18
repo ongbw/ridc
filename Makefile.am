@@ -1,7 +1,8 @@
 ACLOCAL_AMFLAGS = -I m4
 AUTOMAKE_OPTIONS = foreign
 SUBDIRS = src . \
-	examples/explicit
+	examples/explicit \
+	examples/implicit
 
 # DOXYGEN SUPPORT
 include $(top_srcdir)/aminclude.am
