@@ -129,7 +129,21 @@ void corr_fe(double * uold,
              double t,
              PARAMETER param,
              double * unew);
+/**< RIDC helper function - solves error equation, updating the
+   solution from time t to time t+param.dt.
 
+   @return (by reference) unew: solution at time level t + param.dt
+
+   @param uold: solution at time level t
+   @param fprev: matrix containing derivative information from previous steps, previous level
+   @param S: integration matrix (quadrature weights)
+   @param index: decides which quadrature weights to use
+   @param level: determines size of quadrature stencil
+   @param t: current time iterate
+   @param param: contains ODE parameters, for example, number of equations
+   @param unew: solution at the new time level, passed by reference
+
+*/
 
 void corr_be(double * uold,
              double ** fprev,
@@ -138,6 +152,20 @@ void corr_be(double * uold,
              double t,
              PARAMETER param,
              double * unew);
+/**< RIDC helper function - solves error equation, updating the
+   solution from time t to time t+param.dt.
 
+   @return (by reference) unew: solution at time level t + param.dt
+
+   @param uold: solution at time level t
+   @param fprev: matrix containing derivative information from previous steps, previous level
+   @param S: integration matrix (quadrature weights)
+   @param index: decides which quadrature weights to use
+   @param level: determines size of quadrature stencil
+   @param t: current time iterate
+   @param param: contains ODE parameters, for example, number of equations
+   @param unew: solution at the new time level, passed by reference
+
+*/
 
 #endif // _RIDC_H_
