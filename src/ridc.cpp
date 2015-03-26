@@ -403,6 +403,14 @@ void ridc_be(int order, PARAMETER param, double *sol) {
       }
     }
   }
+
+  /*
+  for (int i = 0; i<param.neq; i++) {
+    printf("%g\n",f[order-1][0][i]);
+  }
+  exit(42);
+  */
+
   
   // flag for whether to shift memory in stencil
   bool *doMemShift = new bool[order];
@@ -501,8 +509,18 @@ void ridc_be(int order, PARAMETER param, double *sol) {
 	  // compute current time
 	  double t = param.ti + (ii[p])*dt;
 	  if (p==0) {
+
+  
 	    // this is the prediction step
-	    step<PARAMETER>(t, u[0][index_into_array], param, unew[0]);
+	    step<>(t, u[0][index_into_array], param, unew[0]);
+
+	    /*
+  for (int i =0; i<param.neq; i++){
+    printf("%g\n",unew[0][i]);
+  }
+  exit(42);
+	    */
+
 	    // populate memory stencil for f
 	    rhs<PARAMETER>(t+dt, unew[0], param, fnew[0]);
 	  } else {
@@ -910,6 +928,20 @@ void corr_be(double * uold,
     }
   }
 
+  /*
+  for (int i =0; i<param.neq; i++) {
+    printf("%g\n",uold[i]);
+  }
+  */
+  
+
   step<PARAMETER>(t, uold, param, unew);
+
+  /*
+  for (int i =0; i<param.neq; i++) {
+    printf("%g\n",unew[i]);
+  }
+  */
+
 
 } // end corr_be
