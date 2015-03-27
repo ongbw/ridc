@@ -683,6 +683,10 @@ DX_ENV
 DX_DOCDIR
 DX_CONFIG
 DX_PROJECT
+HAVE_GSL_FALSE
+HAVE_GSL_TRUE
+HAVE_MKL_FALSE
+HAVE_MKL_TRUE
 AM_LDFLAGS
 AM_CXXFLAGS
 OPENMP_CXXFLAGS
@@ -818,6 +822,8 @@ with_gnu_ld
 with_sysroot
 enable_libtool_lock
 enable_openmp
+with_intel_mkl
+with_gsl
 enable_doxygen_doc
 enable_doxygen_dot
 enable_doxygen_man
@@ -1493,6 +1499,10 @@ Optional Packages:
   --with-gnu-ld           assume the C compiler uses GNU ld [default=no]
   --with-sysroot=DIR Search for dependent libraries within DIR
                         (or the compiler's sysroot if not specified).
+  --with-intel-mkl        build examples linked against the Intel Math Kernel
+                          Library
+  --with-gsl              build examples linked against the GNU Scientific
+                          Library
 
 Some influential environment variables:
   CC          C compiler command
@@ -15233,6 +15243,29 @@ $as_echo "$ac_cv_prog_cxx_openmp" >&6; }
 
 
 
+# give option to build examples with Intel MKL
+
+# Check whether --with-intel-mkl was given.
+if test "${with_intel_mkl+set}" = set; then :
+  withval=$with_intel_mkl; with_intel_mkl=yes
+else
+  with_intel_mkl=no
+fi
+
+
+
+# give option to build examples with GSL
+
+# Check whether --with-gsl was given.
+if test "${with_gsl+set}" = set; then :
+  withval=$with_gsl; with_gsl=yes
+else
+  with_gsl=no
+fi
+
+
+
+
 # files to generate via autotools (.am or .in source files)
 ac_config_files="$ac_config_files Makefile"
 
@@ -15247,6 +15280,27 @@ ac_config_files="$ac_config_files examples/implicit_mkl/Makefile"
 ac_config_files="$ac_config_files examples/brusselator_mkl/Makefile"
 
 ac_config_files="$ac_config_files examples/brusselator_gsl/Makefile"
+
+
+# set variable if MKL enabled
+ if test "$with_intel_mkl" = yes ; then
+  HAVE_MKL_TRUE=
+  HAVE_MKL_FALSE='#'
+else
+  HAVE_MKL_TRUE='#'
+  HAVE_MKL_FALSE=
+fi
+
+
+# set variable if GSL enabled
+ if test "$with_gsl" = yes ; then
+  HAVE_GSL_TRUE=
+  HAVE_GSL_FALSE='#'
+else
+  HAVE_GSL_TRUE='#'
+  HAVE_GSL_FALSE=
+fi
+
 
 
 
@@ -17366,6 +17420,14 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${am__fastdepCXX_TRUE}" && test -z "${am__fastdepCXX_FALSE}"; then
   as_fn_error $? "conditional \"am__fastdepCXX\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${HAVE_MKL_TRUE}" && test -z "${HAVE_MKL_FALSE}"; then
+  as_fn_error $? "conditional \"HAVE_MKL\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${HAVE_GSL_TRUE}" && test -z "${HAVE_GSL_FALSE}"; then
+  as_fn_error $? "conditional \"HAVE_GSL\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${DX_COND_doc_TRUE}" && test -z "${DX_COND_doc_FALSE}"; then

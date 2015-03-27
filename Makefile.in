@@ -179,7 +179,9 @@ am__define_uniq_tagged_files = \
 ETAGS = etags
 CTAGS = ctags
 CSCOPE = cscope
-DIST_SUBDIRS = $(SUBDIRS)
+DIST_SUBDIRS = src . examples/explicit examples/implicit \
+	examples/implicit_mkl examples/brusselator_mkl \
+	examples/brusselator_gsl
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -371,13 +373,9 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 ACLOCAL_AMFLAGS = -I m4
 AUTOMAKE_OPTIONS = foreign
-SUBDIRS = src . \
-	examples/explicit \
-	examples/implicit \
-	examples/implicit_mkl \
-	examples/brusselator_mkl\
-	examples/brusselator_gsl
-
+@HAVE_MKL_TRUE@MKL_EXAMPLES = examples/implicit_mkl examples/brusselator_mkl
+@HAVE_GSL_TRUE@GSL_EXAMPLES = examples/brusselator_gsl
+SUBDIRS = src . examples/explicit examples/implicit $(MKL_EXAMPLES) $(GSL_EXAMPLES)
 @DX_COND_doc_TRUE@@DX_COND_html_TRUE@DX_CLEAN_HTML = @DX_DOCDIR@/html
 @DX_COND_chm_TRUE@@DX_COND_doc_TRUE@DX_CLEAN_CHM = @DX_DOCDIR@/chm
 @DX_COND_chi_TRUE@@DX_COND_chm_TRUE@@DX_COND_doc_TRUE@DX_CLEAN_CHI = @DX_DOCDIR@/@PACKAGE@.chi
@@ -406,7 +404,23 @@ SUBDIRS = src . \
 # DOXYGEN SUPPORT
 
 # ensure the distribution of the doxygen configuration file
-EXTRA_DIST = Doxyfile.in
+EXTRA_DIST = Doxyfile.in \
+	examples/explicit/ref \
+	examples/implicit/ref \
+	examples/implicit_mkl/ref  \
+	examples/brusselator_mkl/ref \
+	examples/brusselator_gsl/ref \
+	examples/explicit/convergence.m \
+	examples/implicit/convergence.m \
+	examples/implicit_mkl/convergence.m \
+	examples/brusselator_mkl/convergence.m \
+	examples/brusselator_gsl/convergence.m \
+	examples/explicit/run.sh \
+	examples/implicit/run.sh \
+	examples/implicit_mkl/run.sh \
+	examples/brusselator_mkl/run.sh \
+	examples/brusselator_gsl/run.sh
+
 all: all-recursive
 
 .SUFFIXES:
