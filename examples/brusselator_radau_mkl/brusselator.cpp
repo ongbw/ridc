@@ -165,7 +165,7 @@ void step(double t, double* uold, PARAMETER param, double* unew, BUTCHER rk) {
   // t is current time
 
   double NEWTON_TOL = 1.0e-12;
-  int NEWTON_MAXSTEP = 1000;
+  int NEWTON_MAXSTEP = 10;
 
   typedef double *pdoub;
 
