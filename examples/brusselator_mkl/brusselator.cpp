@@ -161,8 +161,8 @@ void step(double t, double* uold, PARAMETER param, double* unew) {
 
   double tnew = t + param.dt;
 
-  double NEWTON_TOL = 1.0e-14;
-  int NEWTON_MAXSTEP = 1000;
+  double NEWTON_TOL = 1.0e-10;
+  int NEWTON_MAXSTEP = 10;
 
   typedef double *pdoub;
 
