@@ -42,6 +42,8 @@ AC_CONFIG_FILES([examples/implicit/Makefile])
 AC_CONFIG_FILES([examples/implicit_mkl/Makefile])
 AC_CONFIG_FILES([examples/brusselator_mkl/Makefile])
 AC_CONFIG_FILES([examples/brusselator_gsl/Makefile])
+AC_CONFIG_FILES([examples/brusselator_radau_mkl/Makefile])
+
 
 # set variable if MKL enabled
 AM_CONDITIONAL([HAVE_MKL], [test "$with_intel_mkl" = yes ])

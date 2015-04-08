@@ -8,15 +8,16 @@
 
 
 int main(int argc, char *argv[]) {
-  int nt;
+  int nt,neq;
   double *sol;
 
-  if (argc != 2) {
-    printf("usage: <executable> <nt>  >  output_file\n");
+  if (argc != 3) {
+    printf("usage: <executable> <nt> <Nx> >  output_file\n");
     fflush(stdout);
     exit(1);
   } else {
     nt = atoi(argv[1]); // number of time steps
+    neq = atoi(argv[2]); // number of spatial intervals
   }
 
 
@@ -26,7 +27,7 @@ int main(int argc, char *argv[]) {
   param.ti = 0; // initial time
   param.tf = 10.0; // final time
   param.dt = (double)(param.tf - param.ti)/nt; // compute dt
-  param.neq = 1e3; // number of equations
+  param.neq = neq; // number of equations
   param.nt = nt; // store number of time steps
 
 

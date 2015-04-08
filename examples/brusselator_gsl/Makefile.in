@@ -527,9 +527,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign examples/brusselator_gsl/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu examples/brusselator_gsl/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign examples/brusselator_gsl/Makefile
+	  $(AUTOMAKE) --gnu examples/brusselator_gsl/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \

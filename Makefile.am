@@ -30,4 +30,6 @@ EXTRA_DIST = Doxyfile.in \
 	examples/implicit_mkl/run.sh \
 	examples/brusselator_mkl/run.sh \
 	examples/brusselator_gsl/run.sh
+	examples/brusselator_mkl/timing.sh \
+	examples/brusselator_radau_mkl/timing.sh 
 
