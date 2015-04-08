@@ -8,16 +8,17 @@
 #include "ridc.h"
  
 int main(int argc, char *argv[]) {
-  int order, nt;
+  int order, nt, neq;
   double *sol;
 
-  if (argc != 3) {
-    printf("usage: <executable> <order> <nt>  >  output_file\n");
+  if (argc != 4) {
+    printf("usage: <executable> <order> <nt> <neq>  >  output_file\n");
     fflush(stdout);
     exit(1);
   } else {
     order = atoi(argv[1]); // order of method
     nt = atoi(argv[2]); // number of time steps
+    neq = atoi(argv[3]); // number of equations
   }
 
 
@@ -27,7 +28,7 @@ int main(int argc, char *argv[]) {
   param.ti = 0; // initial time
   param.tf = 10.0; // final time
   param.dt = (double)(param.tf - param.ti)/nt; // compute dt
-  param.neq = 100; // number of equations
+  param.neq = neq; // number of equations
   param.nt = nt; // store number of time steps
 
 

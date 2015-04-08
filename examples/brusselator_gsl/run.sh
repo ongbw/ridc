@@ -2,24 +2,25 @@
 
 ORDER=4
 EXE=brusselator_gsl
+Nx=100
 export OMP_THREADS=${ORDER}
 
 # convergence study
 STEPS=100
 echo "running order ${ORDER} ridc with nt = ${STEPS}" >> ${EXE}.log
-./${EXE} ${ORDER} ${STEPS} > n1.dat
+./${EXE} ${ORDER} ${STEPS} ${Nx} > n1.dat
 STEPS=200
 echo "running order ${ORDER} ridc with nt = ${STEPS}" >> ${EXE}.log
-./${EXE} ${ORDER} ${STEPS} > n2.dat
+./${EXE} ${ORDER} ${STEPS} ${Nx} > n2.dat
 STEPS=400
 echo "running order ${ORDER} ridc with nt = ${STEPS}" >> ${EXE}.log
-./${EXE} ${ORDER} ${STEPS} > n3.dat
+./${EXE} ${ORDER} ${STEPS} ${Nx} > n3.dat
 STEPS=800
 echo "running order ${ORDER} ridc with nt = ${STEPS}" >> ${EXE}.log
-./${EXE} ${ORDER} ${STEPS} > n4.dat
+./${EXE} ${ORDER} ${STEPS} ${Nx} > n4.dat
 STEPS=1600
 echo "running order ${ORDER} ridc with nt = ${STEPS}" >> ${EXE}.log
-./${EXE} ${ORDER} ${STEPS} > n5.dat
+./${EXE} ${ORDER} ${STEPS} ${Nx} > n5.dat
 
 
 rm -f diff.log
