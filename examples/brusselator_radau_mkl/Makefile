@@ -297,7 +297,7 @@ mandir = ${datarootdir}/man
 mkdir_p = $(MKDIR_P)
 oldincludedir = /usr/include
 pdfdir = ${docdir}
-prefix = /home/ongbw/libridc
+prefix = /usr/local
 program_transform_name = s,x,x,
 psdir = ${docdir}
 sbindir = ${exec_prefix}/sbin
@@ -311,6 +311,7 @@ top_srcdir = ../..
 AM_CPPFLAGS = $(CPPFLAGS) -I$(top_srcdir)/src 
 brusselator_radau_SOURCES = brusselator.cpp  radau.cpp
 brusselator_radau_LDADD = -lmkl_intel_lp64 -lmkl_core -lmkl_sequential -lpthread -lm
+EXTRA_DIST = timing.sh ode.h
 all: all-am
 
 .SUFFIXES:

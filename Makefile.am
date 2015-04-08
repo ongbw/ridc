@@ -1,7 +1,7 @@
 ACLOCAL_AMFLAGS = -I m4
 AUTOMAKE_OPTIONS = foreign
 if HAVE_MKL
-  MKL_EXAMPLES = examples/implicit_mkl examples/brusselator_mkl
+  MKL_EXAMPLES = examples/implicit_mkl examples/brusselator_mkl examples/brusselator_radau_mkl
 endif
 if HAVE_GSL
   GSL_EXAMPLES = examples/brusselator_gsl

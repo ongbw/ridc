@@ -4,7 +4,7 @@ EXE=brusselator_radau
 
 # convergence study
 STEPS=100
-Nx=100
+Nx=1000
 
 echo "running radau with with nt = ${STEPS}, neq=${Nx}" >> ${EXE}.log
 time ./${EXE} ${STEPS} ${Nx} > n1.dat
