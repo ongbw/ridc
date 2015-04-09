@@ -419,7 +419,10 @@ EXTRA_DIST = Doxyfile.in \
 	examples/implicit/run.sh \
 	examples/implicit_mkl/run.sh \
 	examples/brusselator_mkl/run.sh \
-	examples/brusselator_gsl/run.sh
+	examples/brusselator_gsl/run.sh \
+	examples/brusselator_mkl/timing.sh \
+	examples/brusselator_radau_mkl/timing.sh \
+	doxygen-doc
 
 all: all-recursive
 
@@ -935,8 +938,6 @@ uninstall-am:
 @DX_COND_doc_TRUE@	rm -rf @DX_DOCDIR@
 @DX_COND_doc_TRUE@	mkdir -p @DX_DOCDIR@
 @DX_COND_doc_TRUE@	$(DX_ENV) $(DX_DOXYGEN) $(srcdir)/$(DX_CONFIG)
-	examples/brusselator_mkl/timing.sh \
-	examples/brusselator_radau_mkl/timing.sh 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
