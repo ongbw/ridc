@@ -10,13 +10,13 @@ void newt(double t, double *uprev, double *uguess,
 /**< Helper function to compute the next newton step
    for solving a system of equations
 
-   @return (by reference) uguess, the next newton step
+   @return (by reference) g, how far from zero we are
    @param param: structure containing number of equations, number of
    time steps, initial and final time, time step
    @param t: current time step
-   @param u: function value at the current time step
-   @param uprev: previous newton guess
-   @param g: ODE specific value
+   @param uprev: solution at previous time step
+   @param uguess: current solution guess
+   @param g: how far from the root we are
 */
 
 
@@ -31,6 +31,7 @@ void jac(double t, double *u, double *J, PARAMETER param);
    time steps, initial and final time, time step
    @param t: current time step
    @param u: function value at the current time step
+   @param J: the jacobian, returned by reference
 */
 
 
