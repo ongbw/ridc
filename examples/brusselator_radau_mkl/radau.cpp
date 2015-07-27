@@ -7,6 +7,13 @@
 #include "ode.h"
 
 
+/** @brief This is the the main function for the brusselator_radau_mkl example
+ *
+ * This will pass user given options along with some standard options 
+ * for this type of problem in to the PARAMETER struct and start 
+ * the solving the problem
+ */
+
 int main(int argc, char *argv[]) {
   int nt,neq;
   double *sol;
@@ -15,7 +22,8 @@ int main(int argc, char *argv[]) {
     printf("usage: <executable> <nt> <Nx> >  output_file\n");
     fflush(stdout);
     exit(1);
-  } else {
+  }
+  else {
     nt = atoi(argv[1]); // number of time steps
     neq = atoi(argv[2]); // number of spatial intervals
   }
