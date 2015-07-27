@@ -5,6 +5,18 @@
 
 #include "ridc.h"
 
+//EditNoticeForOngbw added brief and detailed descripion below for Doxygen to use 
+
+/** @brief This file holds the main function for the explicit example
+ *
+ * This is for passing user given options along with some options 
+ * that are normal for this type of problem in to the PARAMETER struct
+ * starting the process by calling ridc_fe() 
+ * \n
+ * \n 
+ * usage: <executable> <order> <nt>  >  output_file
+ */ 
+
 int main(int argc, char *argv[]) {
   int order, nt;
   double *sol;
@@ -13,7 +25,8 @@ int main(int argc, char *argv[]) {
     printf("usage: <executable> <order> <nt>  >  output_file\n");
     fflush(stdout);
     exit(1);
-  } else {
+  }
+  else {//EditNoticeForOngbw I moved this else down one line so it is on the same indentation level as the if statment.
     order = atoi(argv[1]); // order of method
     nt = atoi(argv[2]); // number of time steps
   }
