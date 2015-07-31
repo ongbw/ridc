@@ -9,11 +9,10 @@
 
 /** @brief This file holds the main function for the explicit example
  *
- * This is for passing user given options along with some options 
- * that are normal for this type of problem in to the PARAMETER struct
- * starting the process by calling ridc_fe() 
+ * This is for passing user given options along with some standard options 
+ * for this type of problem in to the PARAMETER struct starting 
+ * the solving process by calling ridc_fe() 
  * \n
- * \n 
  * usage: <executable> <order> <nt>  >  output_file
  */ 
 
