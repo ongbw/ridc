@@ -6,6 +6,17 @@
 #include <cmath>
 #include "ode.h"
 
+//EditNoticeForOngbw added brief and detailed descripion below for Doxygen to use,  
+
+/** @brief This is the the main function for the brusselator_radau_mkl example
+ *
+ * This will pass user given options along with some standard options 
+ * for this type of problem in to the PARAMETER struct and start 
+ * the solving the problem
+ */
+
+// this example works differently then the others as it does not ridc.h
+// I don't know if this is important for the documentation/usage.
 
 int main(int argc, char *argv[]) {
   int nt,neq;
@@ -15,7 +26,8 @@ int main(int argc, char *argv[]) {
     printf("usage: <executable> <nt> <Nx> >  output_file\n");
     fflush(stdout);
     exit(1);
-  } else {
+  }
+  else {
     nt = atoi(argv[1]); // number of time steps
     neq = atoi(argv[2]); // number of spatial intervals
   }

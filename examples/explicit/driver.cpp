@@ -7,13 +7,11 @@
 
 //EditNoticeForOngbw added brief and detailed descripion below for Doxygen to use 
 
-/** @brief This file holds the main function for the explicit example
+/** @brief This is the the main function for the explicit example
  *
- * This is for passing user given options along with some standard options 
- * for this type of problem in to the PARAMETER struct starting 
+ * This will pass user given options along with some standard options 
+ * for this type of problem in to the PARAMETER struct and start 
  * the solving process by calling ridc_fe() 
- * \n
- * usage: <executable> <order> <nt>  >  output_file
  */ 
 
 int main(int argc, char *argv[]) {
@@ -25,7 +23,7 @@ int main(int argc, char *argv[]) {
     fflush(stdout);
     exit(1);
   }
-  else {//EditNoticeForOngbw I moved this else down one line so it is on the same indentation level as the if statment.
+  else {
     order = atoi(argv[1]); // order of method
     nt = atoi(argv[2]); // number of time steps
   }
