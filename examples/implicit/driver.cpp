@@ -5,6 +5,18 @@
 
 #include "ridc.h"
 
+//EditNoticeForOngbw added brief and detailed descripion below for Doxygen to use 
+
+/** @brief This is the main function for the inplicit example
+ * 
+ * This is for passing usergiven options along with some standard options
+ * for this type of problem into the PARAMITER struct and starting 
+ * the solving process by calling ridc_be()
+ * \n
+ * usage: <executable> <order> <nt>  >  output_file
+ */
+
+
 int main(int argc, char *argv[]) {
   int order, nt;
   double *sol;
