@@ -6,8 +6,18 @@
 #include "mkl_lapacke.h" // MKL LAPACK
 #include <cmath>
 
-
 #include "ridc.h"
+
+//EditNoticeForOngbw added brief and detailed descripion below for Doxygen to use
+
+/** @brief This is the main function for the brusselator_mkl example
+ *
+ * This will pass user given options along with some standard options
+ * for this type of problem into the PARAMITER struct and start 
+ * the solving process by calling ridc_be()
+ * \n
+ * This example uses the Math Kernal Library (mlk) 
+ */
  
 int main(int argc, char *argv[]) {
   int order, nt,neq;
@@ -17,7 +27,8 @@ int main(int argc, char *argv[]) {
     printf("usage: <executable> <order> <nt>  >  output_file\n");
     fflush(stdout);
     exit(1);
-  } else {
+  }
+  else {
     order = atoi(argv[1]); // order of method
     nt = atoi(argv[2]); // number of time steps
     neq = atoi(argv[3]); // number of equations
