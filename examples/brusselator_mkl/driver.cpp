@@ -8,7 +8,6 @@
 
 #include "ridc.h"
 
-//EditNoticeForOngbw added brief and detailed descripion below for Doxygen to use
 
 /** @brief This is the main function for the brusselator_mkl example
  *

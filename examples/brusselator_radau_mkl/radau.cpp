@@ -6,7 +6,6 @@
 #include <cmath>
 #include "ode.h"
 
-//EditNoticeForOngbw added brief and detailed descripion below for Doxygen to use,  
 
 /** @brief This is the the main function for the brusselator_radau_mkl example
  *
@@ -14,9 +13,6 @@
  * for this type of problem in to the PARAMETER struct and start 
  * the solving the problem
  */
-
-// this example works differently then the others as it does not ridc.h
-// I don't know if this is important for the documentation/usage.
 
 int main(int argc, char *argv[]) {
   int nt,neq;

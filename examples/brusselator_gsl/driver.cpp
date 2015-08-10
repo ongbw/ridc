@@ -4,9 +4,8 @@
 #include <stdio.h>
 #include <cmath>
 
-//EditNoticeForOngbw added brief and detailed descripion below for Doxygen to use 
 
-/** @brief This is the main function for the brusselator_gsl exampe
+/** @brief This is the main function for the brusselator_gsl example
  *
  * This will pass user given options along with some standard options 
  * for this type of problem in to the PARAMETER struct and start 
