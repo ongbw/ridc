@@ -5,6 +5,13 @@
 #include <cmath>
 
 
+/** @brief This is the main function for the brusselator_gsl example
+ *
+ * This will pass user given options along with some standard options 
+ * for this type of problem in to the PARAMETER struct and start 
+ * the solving process by calling ridc_be() 
+ */
+
 #include "ridc.h"
  
 int main(int argc, char *argv[]) {
@@ -15,7 +22,8 @@ int main(int argc, char *argv[]) {
     printf("usage: <executable> <order> <nt> <neq>  >  output_file\n");
     fflush(stdout);
     exit(1);
-  } else {
+  }
+  else {
     order = atoi(argv[1]); // order of method
     nt = atoi(argv[2]); // number of time steps
     neq = atoi(argv[3]); // number of equations
