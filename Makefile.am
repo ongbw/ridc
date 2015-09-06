@@ -32,4 +32,7 @@ EXTRA_DIST = Doxyfile.in \
 	examples/brusselator_gsl/run.sh \
 	examples/brusselator_mkl/timing.sh \
 	examples/brusselator_radau_mkl/timing.sh \
+	examples/implicit_mkl/implicit.h \
+	examples/brusselator_mkl/brusselator.h\
+	examples/brusselator_gsl/brusselator.h \
 	doxygen-doc
