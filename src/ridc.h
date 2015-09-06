@@ -1,9 +1,9 @@
 /** 
     @file ridc.h
     @author Ong:Benjamin
-    @version Revision 0.1
+    @version Revision 0.2
     @brief header file containing explanation of functions for the RIDC integrator
-    @date 2015-03-18
+    @date 2015-09-04
 */
 
 
@@ -14,19 +14,33 @@
 #include <cmath>
 #include <algorithm>
 
+//struct PARAMETER {
+//  int neq;  /**< number of equations */
+//  int nt;  /**< number of time steps */
+//  double ti; /**< initial time */
+//  double tf;  /**< final time */
+//  double dt;  /**< time step */
+//};
 
-struct PARAMETER {
-  int neq;  /**< number of equations */
-  int nt;  /**< number of time steps */
-  double ti; /**< initial time */
-  double tf;  /**< final time */
-  double dt;  /**< time step */
+
+class ODE
+{
+public:
+	int neq;  /**< number of equations */
+	int nt;  /**< number of time steps */
+	double ti; /**< initial time */
+	double tf;  /**< final time */
+	double dt;  /**< time step */
+
+	virtual void rhs(double t, double *u, double *f) = 0;
+	virtual void step(double t, double *u, double *unew) = 0;
+
 };
 
 
 
-template <class PARAMETER>
- void rhs(double t, double *u, PARAMETER param, double* f);
+//template <class PARAMETER>
+// void rhs(double t, double *u, PARAMETER param, double* f);
 /**< This user-defined function (instantiated as a template) returns
    the right hand side of the ODE.  
    @return (by reference, f)
@@ -36,8 +50,8 @@ template <class PARAMETER>
    @param f: returns f(t,y) by reference
 */
 
-template <class PARAMETER>
-void step(double t, double* u, PARAMETER param, double* unew);
+//template <class PARAMETER>
+//void step(double t, double* u, PARAMETER param, double* unew);
 /**< This user-defined function (instantiated as a template) returns
    the Euler advance of the solution from time to to time t+dt
    @return (by reference, unew)
@@ -48,24 +62,20 @@ void step(double t, double* u, PARAMETER param, double* unew);
 */
 
 
-void ridc_fe(int order, PARAMETER param, double *sol);
+void ridc_fe(ODE *ode, int order, double *sol);
 /**< Main explicit ridc loop that initializes variables, integrates
    solution from ti to tf by bootstrapping the step function.
    @return (by reference) sol, the solution at the final time, param.tf
-   @param param: structure containing number of equations, number of
-   time steps, initial and final time, time step
    @param order: order of the RIDC method (predictor + number of correctors)
    @param sol: initial condition of the IVP
 */
 
-void ridc_be(int order, PARAMETER param, double *sol);
+void ridc_be(ODE *ode, int order,  double *sol);
 /**< Main implicit ridc loop that initializes variables, integrates
    solution from ti to tf by bootstrapping the step function.
 
    @return (by reference) sol, the solution at the final time, param.tf
 
-   @param param: structure containing number of equations, number of
-   time steps, initial and final time, time step
    @param order: order of the RIDC method (predictor + number of correctors)
    @param sol: initial condition of the IVP
 */
@@ -122,12 +132,12 @@ void init_unif_nodes(double *x, int Nx, double a, double b);
 
 */
 
-void corr_fe(double * uold,
+void corr_fe(ODE * ode,
+	     double * uold,
              double ** fprev,
              double ** S,
              int index, int level,
              double t,
-             PARAMETER param,
              double * unew);
 /**< RIDC helper function - solves error equation, updating the
    solution from time t to time t+param.dt.
@@ -140,17 +150,16 @@ void corr_fe(double * uold,
    @param index: decides which quadrature weights to use
    @param level: determines size of quadrature stencil
    @param t: current time iterate
-   @param param: contains ODE parameters, for example, number of equations
    @param unew: solution at the new time level, passed by reference
 
 */
 
-void corr_be(double * uold,
+void corr_be(ODE * ode,
+	     double * uold,
              double ** fprev,
              double ** S,
              int index, int level,
              double t,
-             PARAMETER param,
              double * unew);
 /**< RIDC helper function - solves error equation, updating the
    solution from time t to time t+param.dt.
@@ -163,7 +172,6 @@ void corr_be(double * uold,
    @param index: decides which quadrature weights to use
    @param level: determines size of quadrature stencil
    @param t: current time iterate
-   @param param: contains ODE parameters, for example, number of equations
    @param unew: solution at the new time level, passed by reference
 
 */

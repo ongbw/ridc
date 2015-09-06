@@ -29,12 +29,13 @@ using namespace std;
 // Called By: none
 //
 ///////////////////////////////////////////////////////
-void ridc_fe(int order, PARAMETER param, double *sol) {
+void ridc_fe(ODE * ode, int order, double *sol) {
 
   // unpack param
-  double dt = param.dt;
-  int neq = param.neq;
-  int Nt = param.nt;
+  double dt = ode->dt;
+  double ti = ode->ti;
+  int neq = ode->neq;
+  int Nt = ode->nt;
 
   // setup memory stencil for RIDC
   int * stencilSize = new int[order];
@@ -79,16 +80,17 @@ void ridc_fe(int order, PARAMETER param, double *sol) {
   }
 
   // get initial condition
-  for (int i = 0; i<param.neq;i++) {
+  for (int i = 0; i<neq;i++) {
     u[0][0][i] = sol[i];
   }
 
   // compute f[0][0]
-  rhs<PARAMETER>(param.ti, u[0][0], param, f[0][0]);
-
+  //rhs<PARAMETER>(param.ti, u[0][0], param, f[0][0]);
+  ode->rhs(ti,u[0][0],f[0][0]);
+  
   // copy initial condition for each RIDC level
   for (int j=1;j<order;j++){
-    for (int i = 0; i<param.neq;i++) {
+    for (int i=0; i<neq; i++) {
       u[j][0][i]=u[0][0][i];
       f[j][0][i]=f[0][0][i];
     }
@@ -190,23 +192,26 @@ void ridc_fe(int order, PARAMETER param, double *sol) {
 	  // Now do a step of the pth Corrector/Predictor
 	  int index_into_array = min(ii[p], stencilSize[p]-1);
 	  // compute current time
-	  double t = param.ti + (ii[p])*dt;
+	  double t = ti + (ii[p])*dt;
 	  if (p==0) {
 	    // this is the prediction step
-	    step<PARAMETER>(t, u[0][index_into_array], param, unew[0]);
+	    //step<PARAMETER>(t, u[0][index_into_array], param, unew[0]);
+	    ode->step(t,u[0][index_into_array],unew[0]);
 	    // populate memory stencil for f (needed for order > 1)
-	    rhs<PARAMETER>(t+dt, unew[0], param, fnew[0]);
+	    //rhs<PARAMETER>(t+dt, unew[0], param, fnew[0]);
+	    ode->rhs(t+dt,unew[0],fnew[0]);
 
 	  } else {
 	    int index_sth = min(ii[p], p-1);
 
 	    //correction step!
-	    corr_fe(u[p][index_into_array], f[p-1], S[p],
-                   index_sth, p+1,t,param, unew[p]);
+	    corr_fe(ode,u[p][index_into_array], f[p-1], S[p],
+                   index_sth, p+1,t, unew[p]);
 
 	    // populate memory stencil if not the last correction loop
 	    if (p < (order-1) ) {
-	      rhs<PARAMETER>(t+dt, unew[p], param, fnew[p]);
+	      //rhs<PARAMETER>(t+dt, unew[p], param, fnew[p]);
+	      ode->rhs(t+dt,unew[p],fnew[p]);
 	    }
 	  }
 	  ii[p]++;
@@ -269,7 +274,7 @@ void ridc_fe(int order, PARAMETER param, double *sol) {
 
 
   int p = order-1;
-  for (int i =0; i<param.neq; i++) {
+  for (int i =0; i<neq; i++) {
     sol[i] = u[p][stencilSize[p]-1][i];
   }
 
@@ -337,12 +342,13 @@ void ridc_fe(int order, PARAMETER param, double *sol) {
 // Called By: none
 //
 ///////////////////////////////////////////////////////
-void ridc_be(int order, PARAMETER param, double *sol) {
+void ridc_be(ODE * ode, int order, double *sol) {
 
   // unpack param
-  double dt = param.dt;
-  int neq = param.neq;
-  int Nt = param.nt;
+  double dt = ode->dt;
+  double ti = ode->ti;
+  int neq = ode->neq;
+  int Nt = ode->nt;
 
   // setup memory stencil for RIDC
   int * stencilSize = new int[order];
@@ -386,18 +392,19 @@ void ridc_be(int order, PARAMETER param, double *sol) {
   }
 
   // get initial condition
-  for (int i = 0; i<param.neq;i++) {
+  for (int i = 0; i<neq;i++) {
     u[0][0][i] = sol[i];
   }
   
   // compute f[0][0]
-  rhs<PARAMETER>(param.ti, u[0][0], param, f[0][0]);
+  //rhs<PARAMETER>(param.ti, u[0][0], param, f[0][0]);
+  ode->rhs(ti,u[0][0],f[0][0]);
   
   // copy initial condition for each RIDC level
   for (int j=1;j<order;j++){
     // copy initial condition for each RIDC level
     for (int j=1;j<order;j++){
-      for (int i = 0; i<param.neq;i++) {
+      for (int i = 0; i<neq;i++) {
 	u[j][0][i]=u[0][0][i];
 	f[j][0][i]=f[0][0][i];
       }
@@ -507,32 +514,28 @@ void ridc_be(int order, PARAMETER param, double *sol) {
 	  // Now do a step of the pth Corrector/Predictor
 	  int index_into_array = min(ii[p], stencilSize[p]-1);
 	  // compute current time
-	  double t = param.ti + (ii[p])*dt;
+	  double t = ti + (ii[p])*dt;
 	  if (p==0) {
 
   
 	    // this is the prediction step
-	    step<>(t, u[0][index_into_array], param, unew[0]);
-
-	    /*
-  for (int i =0; i<param.neq; i++){
-    printf("%g\n",unew[0][i]);
-  }
-  exit(42);
-	    */
-
+	    //step<>(t, u[0][index_into_array], param, unew[0]);
+	    ode->step(t,u[0][index_into_array],unew[0]);
+	    
 	    // populate memory stencil for f
-	    rhs<PARAMETER>(t+dt, unew[0], param, fnew[0]);
+	    //rhs<PARAMETER>(t+dt, unew[0], param, fnew[0]);
+	    ode->rhs(t+dt,unew[0],fnew[0]);
 	  } else {
 	    int index_sth = min(ii[p], p-1);
 
 	    //correction step!
-	    corr_be(u[p][index_into_array], f[p-1], S[p],
-                    index_sth, p+1,t,param, unew[p]);
+	    corr_be(ode,u[p][index_into_array], f[p-1], S[p],
+                    index_sth, p+1,t,unew[p]);
 
 	    // populate memory stencil if not the last correction loop
 	    if (p < (order-1) ) {
-	      rhs<PARAMETER>(t+dt, unew[p], param, fnew[p]);
+	      //rhs<PARAMETER>(t+dt, unew[p], param, fnew[p]);
+	      ode->rhs(t+dt,unew[p],fnew[p]);
 	    }
 	  }
 	  ii[p]++;
@@ -594,7 +597,7 @@ void ridc_be(int order, PARAMETER param, double *sol) {
   ///////////////////////////////////////////////////////////////////
 
   int p = order-1;
-  for (int i =0; i<param.neq; i++) {
+  for (int i =0; i<neq; i++) {
     sol[i] = u[p][stencilSize[p]-1][i];
   }
 
@@ -862,22 +865,24 @@ void init_unif_nodes(double *x, int Nx, double a, double b) {
 // Called By: ridc_fe
 //
 ///////////////////////////////////////////////////////
-void corr_fe(double * uold,
+void corr_fe(ODE * ode,
+	     double * uold,
 	     double ** fprev,
 	     double ** S,
 	     int index, int level,
 	     double t,
-	     PARAMETER param,
 	     double * unew) {
 
-  step<PARAMETER>(t, uold, param, unew);
+  //step<PARAMETER>(t, uold, param, unew);
+  ode->step(t,uold,unew);
 
-
+  int neq = ode->neq;
+  double dt = ode->dt;
   // forward euler update
-  for (int j=0; j<param.neq; j++) {
-    unew[j] -= param.dt*(fprev[index][j]);
+  for (int j=0; j<neq; j++) {
+    unew[j] -= dt*(fprev[index][j]);
     for (int i=0;i<level;i++) {
-      unew[j] = unew[j] + param.dt*(S[index+1][i]-S[index][i])*fprev[i][j]*(level-1);
+      unew[j] = unew[j] + dt*(S[index+1][i]-S[index][i])*fprev[i][j]*(level-1);
     }
   }
 } // end corr_fe
@@ -911,20 +916,22 @@ void corr_fe(double * uold,
 // Called By: ridc_be
 //
 ///////////////////////////////////////////////////////
-void corr_be(double * uold,
+void corr_be(ODE * ode,
+	     double * uold,
 	     double ** fprev,
 	     double ** S,
 	     int index, int level,
 	     double t,
-	     PARAMETER param,
 	     double * unew) {
 
-
+  int neq = ode->neq;
+  double dt = ode->dt;
+  
   // backwards euler update
-  for (int j=0; j<param.neq; j++) {
-    uold[j] -= param.dt*(fprev[index+1][j]);
+  for (int j=0; j<neq; j++) {
+    uold[j] -= dt*(fprev[index+1][j]);
     for (int i=0;i<level;i++) {
-      uold[j] += param.dt*(S[index+1][i]-S[index][i])*fprev[i][j]*(level-1);
+      uold[j] += dt*(S[index+1][i]-S[index][i])*fprev[i][j]*(level-1);
     }
   }
 
@@ -935,8 +942,9 @@ void corr_be(double * uold,
   */
   
 
-  step<PARAMETER>(t, uold, param, unew);
-
+  //step<PARAMETER>(t, uold, param, unew);
+  ode->step(t,uold,unew);
+  
   /*
   for (int i =0; i<param.neq; i++) {
     printf("%g\n",unew[i]);

@@ -197,7 +197,7 @@ ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
 
 # what flags you want to pass to the C compiler & linker
-AM_CXXFLAGS = --pedantic -Wall $(OPENMP_CXXFLAGS)
+AM_CXXFLAGS = $(OPENMP_CXXFLAGS)
 AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
 AM_LDFLAGS = @AM_LDFLAGS@
 AR = @AR@

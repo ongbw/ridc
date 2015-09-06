@@ -25,11 +25,11 @@ echo "running order ${ORDER} ridc with nt = ${STEPS}" >> explicit.log
 rm -f diff.log
 
 # compare with reference solution
-diff n1.dat ref/n1.dat >> diff.log
-diff n2.dat ref/n2.dat >> diff.log
-diff n3.dat ref/n3.dat >> diff.log
-diff n4.dat ref/n4.dat >> diff.log
-diff n5.dat ref/n5.dat >> diff.log
+diff n1.dat ref/n1.ref >> diff.log
+diff n2.dat ref/n2.ref >> diff.log
+diff n3.dat ref/n3.ref >> diff.log
+diff n4.dat ref/n4.ref >> diff.log
+diff n5.dat ref/n5.ref >> diff.log
 
 
 if [ -s diff.log ]

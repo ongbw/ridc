@@ -92,7 +92,7 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 mkinstalldirs = $(install_sh) -d
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-am_implicit_OBJECTS = implicit.$(OBJEXT) driver.$(OBJEXT)
+am_implicit_OBJECTS = implicit.$(OBJEXT)
 implicit_OBJECTS = $(am_implicit_OBJECTS)
 implicit_DEPENDENCIES = $(top_builddir)/src/libridc.la
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -512,7 +512,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CPPFLAGS = -I$(top_srcdir)/src
 LOG_DRIVER = $(top_srcdir)/examples/implicit/run.sh
-implicit_SOURCES = implicit.cpp  driver.cpp
+implicit_SOURCES = implicit.cpp  
 implicit_LDADD = $(top_builddir)/src/libridc.la 
 all: all-am
 
@@ -568,7 +568,6 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/driver.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/implicit.Po@am__quote@
 
 .cpp.o:

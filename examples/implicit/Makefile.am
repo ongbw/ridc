@@ -5,5 +5,5 @@ LOG_DRIVER = $(top_srcdir)/examples/implicit/run.sh
 
 TESTS = implicit
 check_PROGRAMS = implicit
-implicit_SOURCES = implicit.cpp  driver.cpp
+implicit_SOURCES = implicit.cpp  
 implicit_LDADD = $(top_builddir)/src/libridc.la 

@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([libridc], [0.1], [ongbw@mtu.edu])
+AC_INIT([libridc], [0.2], [ongbw@mtu.edu])
 AC_CONFIG_SRCDIR([src/ridc.cpp])
 AM_INIT_AUTOMAKE([1.9])
 AC_PROG_LIBTOOL

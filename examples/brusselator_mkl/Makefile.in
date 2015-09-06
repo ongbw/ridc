@@ -92,7 +92,7 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 mkinstalldirs = $(install_sh) -d
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-am_brusselator_mkl_OBJECTS = brusselator.$(OBJEXT) driver.$(OBJEXT)
+am_brusselator_mkl_OBJECTS = brusselator.$(OBJEXT)
 brusselator_mkl_OBJECTS = $(am_brusselator_mkl_OBJECTS)
 brusselator_mkl_DEPENDENCIES = $(top_builddir)/src/libridc.la
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -365,7 +365,7 @@ TEST_LOG_COMPILE = $(TEST_LOG_COMPILER) $(AM_TEST_LOG_FLAGS) \
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
-AM_CXXFLAGS = --pedantic -Wall $(OPENMP_CXXFLAGS)
+AM_CXXFLAGS = -Wall $(OPENMP_CXXFLAGS)
 AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
 AM_LDFLAGS = @AM_LDFLAGS@
 AR = @AR@
@@ -512,7 +512,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CPPFLAGS = $(CPPFLAGS) -I$(top_srcdir)/src 
 LOG_DRIVER = $(top_srcdir)/examples/brusselator_mkl/run.sh
-brusselator_mkl_SOURCES = brusselator.cpp  driver.cpp
+brusselator_mkl_SOURCES = brusselator.cpp  
 brusselator_mkl_LDADD = $(top_builddir)/src/libridc.la -lmkl_intel_lp64 -lmkl_core -lmkl_sequential -lpthread -lm
 EXTRA_DIST = timing.sh
 all: all-am
@@ -570,7 +570,6 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/brusselator.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/driver.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

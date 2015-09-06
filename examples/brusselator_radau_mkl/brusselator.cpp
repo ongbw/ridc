@@ -216,11 +216,10 @@ void step(double t, double* uold, PARAMETER param, double* unew, BUTCHER rk) {
     // compute numerical Jacobian
     jac(t,uold,K,J,param,rk);
 
-    int info;
     int nrhs = 1;
     
     // blas linear solve
-    info = LAPACKE_dgesv(LAPACK_ROW_MAJOR, neq,
+    LAPACKE_dgesv(LAPACK_ROW_MAJOR, neq,
 		  nrhs, J, neq,pivot,stepsize,1);
 
 

@@ -1,4 +1,4 @@
-AM_CXXFLAGS = --pedantic -Wall $(OPENMP_CXXFLAGS)
+AM_CXXFLAGS =  -Wall $(OPENMP_CXXFLAGS)
 AM_CPPFLAGS = $(CPPFLAGS) -I$(top_srcdir)/src 
 
 
