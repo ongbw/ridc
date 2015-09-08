@@ -4,18 +4,26 @@
 #include <cmath>
 #include <gsl/gsl_linalg.h>
 
+#ifndef _BRUSSELATOR_H_
+#define _BRUSSELATOR_H_
 
-class ImplicitOde : public ODE {
+class BrusselatorOde : public ODE {
 public:
-  ImplicitOde(int my_neq, int my_nt, double my_ti, double my_tf, double my_dt) {
-    neq = my_neq;
-    nt = my_nt;
-    ti = my_ti;
-    tf = my_tf;
-    dt = my_dt;
+  BrusselatorOde(int my_neq, int my_nt, double my_ti, double my_tf, double my_dt) {
+    neq = my_neq; 
+    nt = my_nt;  
+    ti = my_ti; 
+    tf = my_tf; 
+    dt = my_dt; 
   }
   
   void rhs(double t, double *u, double *f) {
+    /** user implemented rhs function, u'=rhs(t,u) 
+       @return (by reference) f: rhs(t,u)
+       @param t current time step
+       @param u solution u at time t
+       @param f rhs(t,u)
+    */    
     double A = 1.0;
     double B = 3.0;
     double alpha = 0.02;
@@ -37,7 +45,12 @@ public:
   }
 
   void step(double t, double * u, double * unew) {
-
+    /** user implemented step function, for advancing the solution from t to t+dt 
+       @return (by reference) unew: solution at time t+dt
+       @param t current time step
+       @param u solution u at time t
+       @param unew solution at time t+dt
+    */
     double tnew = t + dt;
 
     double NEWTON_TOL = 1.0e-14;
@@ -120,19 +133,18 @@ public:
     gsl_permutation_free (p);
     gsl_vector_free (x);
   }
-  
+
+ private:
   void newt(double t, double *uprev, double *uguess,
 	    double *g){
-    /**< Helper function to compute the next newton step
+    /** Helper function to compute the next newton step
        for solving a system of equations
        
-       @return (by reference) g, how far from zero we are
-       @param param: structure containing number of equations, number of
-       time steps, initial and final time, time step
-       @param t: current time step
-       @param uguess: current solution guess
-       @param uprev: solution at previous time step
-       @param g: how far from zero we are, returned by reference
+       @return (by reference) g how far from zero we are
+       @param t current time step
+       @param uguess current solution guess
+       @param uprev solution at previous time step
+       @param g how far from zero we are, returned by reference
     */
     rhs(t,uguess,g);
     for (int i =0; i<neq; i++) {
@@ -141,16 +153,14 @@ public:
   }
     
   void jac(double t, double *u, double *J){
-    /**< Helper function to the jacobian matrix (using finite differences)
+    /** Helper function to the jacobian matrix (using finite differences)
        for advancing the solution from time t(n) to t(n+1) using an
        implicit Euler step on a system of equations
        
-       @return (by reference) J, the Jacobian for the newton step
-       @param param: structure containing number of equations, number of
-       time steps, initial and final time, time step
-       @param t: current time step
-       @param u: function value at the current time step
-       @param J: Jacobian, returned by reference
+       @return (by reference) J the Jacobian for the newton step
+       @param t current time step
+       @param u function value at the current time step
+       @param J Jacobian, returned by reference
     */
     double d = 1e-5; // numerical jacobian approximation
     double *u1;
@@ -188,84 +198,4 @@ public:
   
 };
 
-
-/* template <> */
-/* void step(double t, double* uold, PARAMETER param, double* unew) { */
-/*   // t is current time */
-
-/*   double tnew = t + param.dt; */
-
-/*   double NEWTON_TOL = 1.0e-10; */
-/*   int NEWTON_MAXSTEP = 10; */
-
-  
-/*   double* stepsize = new double[param.neq]; */
-/*   double* uguess = new double[param.neq]; */
-
-/*   double *J = new double[param.neq*param.neq]; */
-
-/*   // GSL */
-/*   gsl_matrix_view m; */
-/*   gsl_vector_view b; */
-/*   gsl_vector *x = gsl_vector_alloc(param.neq); */
-/*   gsl_permutation *p = gsl_permutation_alloc(param.neq); */
-
-
-/*   // set initial condition */
-/*   for (int i=0; i<param.neq; i++) { */
-/*     uguess[i] = uold[i]; */
-/*   } */
-
-/*   double maxstepsize; */
-
-/*   int counter=0; */
-
-/*   while (1) { */
-
-/*     // create rhs */
-/*     newt(tnew,uold,uguess,stepsize,param); */
-
-/*     // compute numerical Jacobian */
-/*     jac(tnew,uguess,J,param); */
-    
-/*     m = gsl_matrix_view_array(J,param.neq,param.neq); */
-/*     b = gsl_vector_view_array(stepsize,param.neq); */
-
-/*     int s; // presumably, this is some flag info */
-
-/*     gsl_linalg_LU_decomp (&m.matrix,p,&s); */
-/*     gsl_linalg_LU_solve (&m.matrix,p,&b.vector, x); */
-
-
-/*     // check for convergence */
-/*     maxstepsize = 0.0; */
-/*     for (int i = 0; i<param.neq; i++) { */
-/*       uguess[i] = uguess[i] - x->data[i]; */
-/*       if (std::abs(stepsize[i])>maxstepsize) { */
-/* 	maxstepsize = std::abs(x->data[i]); */
-/*       } */
-/*     } */
-
-/*     // if update sufficiently small enough */
-/*     if ( maxstepsize < NEWTON_TOL) { */
-/*       break; */
-/*     } */
-
-/*     counter++; */
-/*     //error if too many steps */
-/*     if (counter > NEWTON_MAXSTEP) { */
-/*       fprintf(stderr,"max newton iterations reached\n"); */
-/*       exit(42); */
-/*     } */
-/*   } // end newton iteration */
-
-/*   for (int i=0; i<param.neq; i++) { */
-/*     unew[i] = uguess[i]; */
-/*   } */
-
-/*   delete [] uguess; */
-/*   delete [] stepsize; */
-/*   delete [] J; */
-
-
-/* } */
+#endif // _BRUSSELATOR_H_

@@ -14,60 +14,41 @@
 #include <cmath>
 #include <algorithm>
 
-//struct PARAMETER {
-//  int neq;  /**< number of equations */
-//  int nt;  /**< number of time steps */
-//  double ti; /**< initial time */
-//  double tf;  /**< final time */
-//  double dt;  /**< time step */
-//};
-
-
 class ODE
 {
-public:
-	int neq;  /**< number of equations */
-	int nt;  /**< number of time steps */
-	double ti; /**< initial time */
-	double tf;  /**< final time */
-	double dt;  /**< time step */
-
-	virtual void rhs(double t, double *u, double *f) = 0;
-	virtual void step(double t, double *u, double *unew) = 0;
-
+ public:
+  int neq;  /** number of equations */
+  int nt;  /** number of time steps */
+  double ti; /** initial time */
+  double tf;  /** final time */
+  double dt;  /** time step */
+  
+  virtual void rhs(double t, double *u, double *f) = 0;
+  /**< user implemented rhs function, u'=rhs(t,u) 
+     @return (by reference) f: rhs(t,u)
+     @param t current time step
+     @param u solution u at time t
+     @param f rhs(t,u)
+  */
+  
+  virtual void step(double t, double *u, double *unew) = 0;
+  /**< user implemented step function, for advancing the solution from t to t+dt 
+     @return (by reference) unew: solution at time t+dt
+     @param t current time step
+     @param u solution u at time t
+     @param unew solution at time t+dt
+  */
+  
 };
-
-
-
-//template <class PARAMETER>
-// void rhs(double t, double *u, PARAMETER param, double* f);
-/**< This user-defined function (instantiated as a template) returns
-   the right hand side of the ODE.  
-   @return (by reference, f)
-   @param param: structure containing number of equations
-   @param t: current time step
-   @param u: solution at current time
-   @param f: returns f(t,y) by reference
-*/
-
-//template <class PARAMETER>
-//void step(double t, double* u, PARAMETER param, double* unew);
-/**< This user-defined function (instantiated as a template) returns
-   the Euler advance of the solution from time to to time t+dt
-   @return (by reference, unew)
-   @param param: structure containing number of equations, dt
-   @param t: current time step
-   @param u: solution at current time
-   @param unew: returns unew by reference
-*/
 
 
 void ridc_fe(ODE *ode, int order, double *sol);
 /**< Main explicit ridc loop that initializes variables, integrates
    solution from ti to tf by bootstrapping the step function.
    @return (by reference) sol, the solution at the final time, param.tf
-   @param order: order of the RIDC method (predictor + number of correctors)
-   @param sol: initial condition of the IVP
+   @param ode abstract class containing parameters and step/rhs functions
+   @param order order of the RIDC method (predictor + number of correctors)
+   @param sol initial condition of the IVP
 */
 
 void ridc_be(ODE *ode, int order,  double *sol);
@@ -75,9 +56,9 @@ void ridc_be(ODE *ode, int order,  double *sol);
    solution from ti to tf by bootstrapping the step function.
 
    @return (by reference) sol, the solution at the final time, param.tf
-
-   @param order: order of the RIDC method (predictor + number of correctors)
-   @param sol: initial condition of the IVP
+   @param ode abstract class containing parameters and step/rhs functions
+   @param order order of the RIDC method (predictor + number of correctors)
+   @param sol initial condition of the IVP
 */
 
 
@@ -88,10 +69,10 @@ void lagrange_coeff(double *x, int Nx, int i, double *L);
    @return (by reference) L: coefficients for the Lagrange
    intepolatory polynomial.  L is a vector of elements such that p(x)
    = L(0) + L(1)*x + L(2)*x^2 + ...
-   @param x: quadrature nodes
-   @param i: the i^{th} Lagrange polynomial
-   @param Nx: number of quadrature nodes
-   @param L: coefficients, returned by reference
+   @param x quadrature nodes
+   @param i the i^{th} Lagrange polynomial
+   @param Nx number of quadrature nodes
+   @param L coefficients, returned by reference
 */
 
 
@@ -101,11 +82,10 @@ double get_quad_weight(double *L, int Nx, double a, double b);
 
    @return quadrature weights
 
-   @param a: range of integration
-   @param b: range of integration
-   @param Nx: number of quadrature nodes
-   @param L: coefficients for Lagrange poly,
-	     L[0] + L[1]x + L[2]x^2 + ...
+   @param a range of integration
+   @param b range of integration
+   @param Nx number of quadrature nodes
+   @param L coefficients for Lagrange poly, L[0] + L[1]x + L[2]x^2 + ...
 */
 
 
@@ -115,8 +95,8 @@ void integration_matrices(int Nx, double **S);
 
    @return (by reference) the integration matrix S
 
-   @param Nx: number of quadrature nodes
-   @param S: integration matrix (by reference)
+   @param Nx number of quadrature nodes
+   @param S integration matrix (by reference)
 
 */
 
@@ -125,10 +105,10 @@ void init_unif_nodes(double *x, int Nx, double a, double b);
 
    @return (by reference) x: uniformly spaced quadrature nodes
 
-   @param Nx: number of quadrature nodes
-   @param a: range of integration
-   @param b: range of integration
-   @param x: quadrature node location (returned by reference)
+   @param Nx number of quadrature nodes
+   @param a range of integration
+   @param b range of integration
+   @param x quadrature node location (returned by reference)
 
 */
 
@@ -144,13 +124,14 @@ void corr_fe(ODE * ode,
 
    @return (by reference) unew: solution at time level t + param.dt
 
-   @param uold: solution at time level t
-   @param fprev: matrix containing derivative information from previous steps, previous level
-   @param S: integration matrix (quadrature weights)
-   @param index: decides which quadrature weights to use
-   @param level: determines size of quadrature stencil
-   @param t: current time iterate
-   @param unew: solution at the new time level, passed by reference
+   @param ode abstract class containing parameters and step/rhs functions
+   @param uold solution at time level t
+   @param fprev matrix containing derivative information from previous steps, previous level
+   @param S integration matrix (quadrature weights)
+   @param index decides which quadrature weights to use
+   @param level determines size of quadrature stencil
+   @param t current time iterate
+   @param unew solution at the new time level, passed by reference
 
 */
 
@@ -166,13 +147,14 @@ void corr_be(ODE * ode,
 
    @return (by reference) unew: solution at time level t + param.dt
 
-   @param uold: solution at time level t
-   @param fprev: matrix containing derivative information from previous steps, previous level
-   @param S: integration matrix (quadrature weights)
-   @param index: decides which quadrature weights to use
-   @param level: determines size of quadrature stencil
-   @param t: current time iterate
-   @param unew: solution at the new time level, passed by reference
+   @param ode abstract class containing parameters and step/rhs functions
+   @param uold solution at time level t
+   @param fprev matrix containing derivative information from previous steps, previous level
+   @param S integration matrix (quadrature weights)
+   @param index decides which quadrature weights to use
+   @param level determines size of quadrature stencil
+   @param t current time iterate
+   @param unew solution at the new time level, passed by reference
 
 */
 

@@ -8,21 +8,33 @@ using namespace std;
 class ImplicitOde : public ODE {
 public:
   ImplicitOde(int my_neq, int my_nt, double my_ti, double my_tf, double my_dt) {
-    neq = my_neq;
-    nt = my_nt;
+    neq = my_neq; 
+    nt = my_nt; 
     ti = my_ti;
     tf = my_tf;
     dt = my_dt;
   }
   
   void rhs(double t, double *u, double *f) {
+    /** user implemented rhs function, u'=rhs(t,u) 
+       @return (by reference) f: rhs(t,u)
+       @param t current time step
+       @param u solution u at time t
+       @param f rhs(t,u)
+    */
     for (int i =0; i<neq; i++) {
       f[i]=-(i+1)*t*u[i];
     }    
   }
 
   void step(double t, double * u, double * unew) {
-
+  /** user implemented step function, for advancing the solution from t to t+dt 
+     @return (by reference) unew: solution at time t+dt
+     @param t current time step
+     @param u solution u at time t
+     @param unew solution at time t+dt
+  */
+    
     double tnew = t + dt;
 
     double NEWTON_TOL = 1.0e-14;
@@ -94,16 +106,14 @@ public:
   
   void newt(double t, double *uprev, double *uguess,
 	    double *g){
-    /**< Helper function to compute the next newton step
+    /**  Helper function for computing the next newton step
        for solving a system of equations
        
        @return (by reference) g, how far from zero we are
-       @param param: structure containing number of equations, number of
-       time steps, initial and final time, time step
-       @param t: current time step
-       @param uguess: current solution guess
-       @param uprev: solution at previous time step
-       @param g: how far from zero we are, returned by reference
+       @param t current time step
+       @param uguess current solution guess
+       @param uprev solution at previous time step
+       @param g how far from zero we are, returned by reference
     */
     rhs(t,uguess,g);
     for (int i =0; i<neq; i++) {
@@ -112,16 +122,14 @@ public:
   }
     
   void jac(double t, double *u, double *J){
-    /**< Helper function to the jacobian matrix (using finite differences)
+    /**< Helper function for computing the jacobian matrix (using finite differences)
        for advancing the solution from time t(n) to t(n+1) using an
        implicit Euler step on a system of equations
        
-       @return (by reference) J, the Jacobian for the newton step
-       @param param: structure containing number of equations, number of
-       time steps, initial and final time, time step
-       @param t: current time step
-       @param u: function value at the current time step
-       @param J: Jacobian, returned by reference
+       @return (by reference) J the Jacobian for the newton step
+       @param t current time step
+       @param u function value at the current time step
+       @param J Jacobian, returned by reference
     */
     double d = 1e-5; // numerical jacobian approximation
     double *u1;

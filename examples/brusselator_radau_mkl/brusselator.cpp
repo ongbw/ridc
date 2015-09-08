@@ -11,12 +11,11 @@ void newt(double t, double *uprev, double *uguess,
    for solving a system of equations
 
    @return (by reference) g, how far from zero weare
-   @param param: structure containing number of equations, number of
-   time steps, initial and final time, time step
-   @param t: current time step
-   @param uguess: current solution guess
-   @param uprev: solution at previous time step
-   @param g: how far from zero we are
+   @param param structure containing number of equations, number of time steps, initial and final time, time step
+   @param t current time step
+   @param uguess current solution guess
+   @param uprev solution at previous time step
+   @param g how far from zero we are
 */
 
 
@@ -26,12 +25,11 @@ void jac(double t, double *u, double *J, PARAMETER param);
    for advancing the solution from time t(n) to t(n+1) using an
    implicit Euler step on a system of equations
 
-   @return (by reference) J, the Jacobian for the newton step
-   @param param: structure containing number of equations, number of
-   time steps, initial and final time, time step
-   @param t: current time step
-   @param u: function value at the current time step
-   @param J: Jacobian, returned by reference.
+   @return (by reference) J the Jacobian for the newton step
+   @param param structure containing number of equations, number of time steps, initial and final time, time step
+   @param t current time step
+   @param u function value at the current time step
+   @param J Jacobian, returned by reference.
 */
 
 
@@ -131,22 +129,6 @@ void jac(double t, double *uprev, double *Kguess,
   }
   
 
-  /*
-  for (int i = 0; i<param.neq; i++) {
-    for (int j = 0; j<param.neq; j++) {
-      u1[j] = u[j];
-    }
-    u1[i] = u1[i] + d;
-
-    rhs(t,u1,param,f1);
-
-    for (int j = 0; j<param.neq; j++) {
-      J[j*param.neq+i] = -param.dt*(f1[j]-f[j])/d;
-    }
-    J[i*param.neq+i] = 1.0+J[i*param.neq+i];
-  }
-  */
-
   
   // need to delete memory
   delete [] g1;
@@ -156,7 +138,6 @@ void jac(double t, double *uprev, double *Kguess,
 
 
 void step(double t, double* uold, PARAMETER param, double* unew, BUTCHER rk) {
-  // t is current time
 
   double NEWTON_TOL = 1.0e-12;
   int NEWTON_MAXSTEP = 10;
@@ -222,8 +203,6 @@ void step(double t, double* uold, PARAMETER param, double* unew, BUTCHER rk) {
     LAPACKE_dgesv(LAPACK_ROW_MAJOR, neq,
 		  nrhs, J, neq,pivot,stepsize,1);
 
-
-    
     // check for convergence
     maxstepsize = 0.0;
     for (int i = 0; i<neq; i++) {
@@ -270,8 +249,4 @@ void step(double t, double* uold, PARAMETER param, double* unew, BUTCHER rk) {
   delete [] J;
   delete [] K;
 
-  /*
-  printf("exiting\n");
-  exit(42);
-  */
 }
