@@ -5,34 +5,6 @@
 #include <cmath>
 #include "ode.h"
 
-void newt(double t, double *uprev, double *uguess,
-	  double *g, PARAMETER param);
-/**< Helper function to compute the next newton step
-   for solving a system of equations
-
-   @return (by reference) g, how far from zero weare
-   @param param structure containing number of equations, number of time steps, initial and final time, time step
-   @param t current time step
-   @param uguess current solution guess
-   @param uprev solution at previous time step
-   @param g how far from zero we are
-*/
-
-
-
-void jac(double t, double *u, double *J, PARAMETER param);
-/**< Helper function to the jacobian matrix (using finite differences)
-   for advancing the solution from time t(n) to t(n+1) using an
-   implicit Euler step on a system of equations
-
-   @return (by reference) J the Jacobian for the newton step
-   @param param structure containing number of equations, number of time steps, initial and final time, time step
-   @param t current time step
-   @param u function value at the current time step
-   @param J Jacobian, returned by reference.
-*/
-
-
 
 void rhs(double t, double *u, PARAMETER param, double *f) {
   double A = 1.0;
@@ -91,13 +63,6 @@ void newt(double t, double *uprev, double * Kguess,
 
   delete [] temp;
   delete [] ftemp;
-
-  
-  /*  for (int i =0; i<param.neq*rk.S; i++) {
-    printf("%d, %g\n",i,g[i]);
-  }
-  printf("\n");
-  */
 
 }
 

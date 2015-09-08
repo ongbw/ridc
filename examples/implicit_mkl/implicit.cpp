@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
   double dt = (double)(tf - ti)/nt; // compute dt
   
   // initialize ODE variable
-  ImplicitOde *ode = new ImplicitOde(neq,nt,ti,tf,dt);
+  ImplicitMKL *ode = new ImplicitMKL(neq,nt,ti,tf,dt);
 
   sol = new double[neq];
   // specify initial condition

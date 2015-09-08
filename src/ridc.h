@@ -17,11 +17,20 @@
 class ODE
 {
  public:
-  int neq;  /** number of equations */
-  int nt;  /** number of time steps */
-  double ti; /** initial time */
-  double tf;  /** final time */
-  double dt;  /** time step */
+  /** number of equations */
+  int neq;
+
+  /** number of time steps */
+  int nt;
+
+  /** initial time */
+  double ti;
+
+  /** final time */
+  double tf;
+
+  /** time step */
+  double dt;  
   
   virtual void rhs(double t, double *u, double *f) = 0;
   /**< user implemented rhs function, u'=rhs(t,u) 

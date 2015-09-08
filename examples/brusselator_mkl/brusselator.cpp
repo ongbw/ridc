@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
   double dt = (double)(tf - ti)/nt; // compute dt
   
   // initialize ODE variable
-  BrusselatorOde *ode = new BrusselatorOde(neq,nt,ti,tf,dt);
+  Brusselator_MKL *ode = new Brusselator_MKL(neq,nt,ti,tf,dt);
 
   sol = new double[neq];
   // specify initial condition

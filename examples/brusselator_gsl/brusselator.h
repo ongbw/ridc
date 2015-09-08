@@ -7,9 +7,9 @@
 #ifndef _BRUSSELATOR_H_
 #define _BRUSSELATOR_H_
 
-class BrusselatorOde : public ODE {
+class Brusselator_GSL : public ODE {
 public:
-  BrusselatorOde(int my_neq, int my_nt, double my_ti, double my_tf, double my_dt) {
+  Brusselator_GSL(int my_neq, int my_nt, double my_ti, double my_tf, double my_dt) {
     neq = my_neq; 
     nt = my_nt;  
     ti = my_ti; 
@@ -116,10 +116,10 @@ public:
       counter++;
       //error if too many steps
       if (counter > NEWTON_MAXSTEP) {
-	fprintf(stderr,"max newton iterations reached\n");
+	fprintf(stderr,"max Newton iterations reached\n");
 	exit(42);
       }
-    } // end newton iteration
+    } // end Newton iteration
     
     for (int i=0; i<neq; i++) {
       unew[i] = uguess[i];
@@ -137,7 +137,7 @@ public:
  private:
   void newt(double t, double *uprev, double *uguess,
 	    double *g){
-    /** Helper function to compute the next newton step
+    /** Helper function to compute the next Newton step
        for solving a system of equations
        
        @return (by reference) g how far from zero we are
@@ -153,16 +153,16 @@ public:
   }
     
   void jac(double t, double *u, double *J){
-    /** Helper function to the jacobian matrix (using finite differences)
+    /** Helper function to the Jacobian matrix (using finite differences)
        for advancing the solution from time t(n) to t(n+1) using an
        implicit Euler step on a system of equations
        
-       @return (by reference) J the Jacobian for the newton step
+       @return (by reference) J the Jacobian for the Newton step
        @param t current time step
        @param u function value at the current time step
        @param J Jacobian, returned by reference
     */
-    double d = 1e-5; // numerical jacobian approximation
+    double d = 1e-5; // numerical Jacobian approximation
     double *u1;
     double *f1;
     double *f;
