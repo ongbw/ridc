@@ -14,7 +14,7 @@ using namespace std;
 ///////////////////////////////////////////////////////
 // Inputs:
 //	   int order, order of integrator
-//	   param, problem parameters
+//	   ode, ode definition + problem parameters
 //         sol, initial condition
 //
 ///////////////////////////////////////////////////////
@@ -85,7 +85,6 @@ void ridc_fe(ODE * ode, int order, double *sol) {
   }
 
   // compute f[0][0]
-  //rhs<PARAMETER>(param.ti, u[0][0], param, f[0][0]);
   ode->rhs(ti,u[0][0],f[0][0]);
   
   // copy initial condition for each RIDC level
@@ -194,11 +193,11 @@ void ridc_fe(ODE * ode, int order, double *sol) {
 	  // compute current time
 	  double t = ti + (ii[p])*dt;
 	  if (p==0) {
-	    // this is the prediction step
-	    //step<PARAMETER>(t, u[0][index_into_array], param, unew[0]);
+
+	    // prediction step
 	    ode->step(t,u[0][index_into_array],unew[0]);
+
 	    // populate memory stencil for f (needed for order > 1)
-	    //rhs<PARAMETER>(t+dt, unew[0], param, fnew[0]);
 	    ode->rhs(t+dt,unew[0],fnew[0]);
 
 	  } else {
@@ -210,7 +209,6 @@ void ridc_fe(ODE * ode, int order, double *sol) {
 
 	    // populate memory stencil if not the last correction loop
 	    if (p < (order-1) ) {
-	      //rhs<PARAMETER>(t+dt, unew[p], param, fnew[p]);
 	      ode->rhs(t+dt,unew[p],fnew[p]);
 	    }
 	  }
@@ -224,9 +222,6 @@ void ridc_fe(ODE * ode, int order, double *sol) {
 #pragma omp barrier // ** BARRIER 1 **
     } // end pragma for loop
     
-      ///////////////////////////////////////////////////////////////////
-      // Memory Shifting : NB ... could/should use pointers!
-      ///////////////////////////////////////////////////////////////////
     
     // memshifts
     for (int p=0; p<order; p++) {
@@ -328,7 +323,8 @@ void ridc_fe(ODE * ode, int order, double *sol) {
 ///////////////////////////////////////////////////////
 // Inputs:
 //	   int order, order of integrator
-//	   param, problem parameters
+//	   ode, ode definition + problem parameters
+//         sol, initial condition
 //
 ///////////////////////////////////////////////////////
 // Outputs: (by reference)
@@ -397,7 +393,6 @@ void ridc_be(ODE * ode, int order, double *sol) {
   }
   
   // compute f[0][0]
-  //rhs<PARAMETER>(param.ti, u[0][0], param, f[0][0]);
   ode->rhs(ti,u[0][0],f[0][0]);
   
   // copy initial condition for each RIDC level
@@ -410,13 +405,6 @@ void ridc_be(ODE * ode, int order, double *sol) {
       }
     }
   }
-
-  /*
-  for (int i = 0; i<param.neq; i++) {
-    printf("%g\n",f[order-1][0][i]);
-  }
-  exit(42);
-  */
 
   
   // flag for whether to shift memory in stencil
@@ -518,12 +506,10 @@ void ridc_be(ODE * ode, int order, double *sol) {
 	  if (p==0) {
 
   
-	    // this is the prediction step
-	    //step<>(t, u[0][index_into_array], param, unew[0]);
+	    // prediction step
 	    ode->step(t,u[0][index_into_array],unew[0]);
 	    
 	    // populate memory stencil for f
-	    //rhs<PARAMETER>(t+dt, unew[0], param, fnew[0]);
 	    ode->rhs(t+dt,unew[0],fnew[0]);
 	  } else {
 	    int index_sth = min(ii[p], p-1);
@@ -534,7 +520,6 @@ void ridc_be(ODE * ode, int order, double *sol) {
 
 	    // populate memory stencil if not the last correction loop
 	    if (p < (order-1) ) {
-	      //rhs<PARAMETER>(t+dt, unew[p], param, fnew[p]);
 	      ode->rhs(t+dt,unew[p],fnew[p]);
 	    }
 	  }
@@ -548,9 +533,6 @@ void ridc_be(ODE * ode, int order, double *sol) {
 #pragma omp barrier // ** BARRIER 1 **
     } // end pragma for loop
 
-      ///////////////////////////////////////////////////////////////////
-      // Memory Shifting : NB ... could/should use pointers!
-      ///////////////////////////////////////////////////////////////////
     
     // memshifts
     for (int p=0; p<order; p++) {
@@ -586,7 +568,6 @@ void ridc_be(ODE * ode, int order, double *sol) {
     } // end p
 
     if (ii[order-1] == Nt) {
-      //cout << "done!" << endl;
       break;
     }
     i++;
@@ -615,7 +596,7 @@ void ridc_be(ODE * ode, int order, double *sol) {
 
   for (int p=0; p<order; p++)
     delete [] filter[p];
-  delete filter;
+  delete [] filter;
 
   for (int p=0; p<order; p++) {
     for (int j =0; j<stencilSize[p]; j++) {
@@ -852,14 +833,11 @@ void init_unif_nodes(double *x, int Nx, double a, double b) {
 //	   index,
 //	   level, which correction equation are we solving?
 //	   t, time
-//	   param, problem parameters
+//	   ode, ode definition + problem parameters
 //
 ///////////////////////////////////////////////////////
 // Outputs: (by reference)
 //	    unew, new solution vector
-//
-///////////////////////////////////////////////////////
-// Functions Called: step
 //
 ///////////////////////////////////////////////////////
 // Called By: ridc_fe
@@ -873,11 +851,11 @@ void corr_fe(ODE * ode,
 	     double t,
 	     double * unew) {
 
-  //step<PARAMETER>(t, uold, param, unew);
   ode->step(t,uold,unew);
 
   int neq = ode->neq;
   double dt = ode->dt;
+
   // forward euler update
   for (int j=0; j<neq; j++) {
     unew[j] -= dt*(fprev[index][j]);
@@ -903,14 +881,11 @@ void corr_fe(ODE * ode,
 //	   index,
 //	   level, which correction equation are we solving?
 //	   t, time
-//	   param, problem parameters
+//	   ode, ode definition + problem parameters
 //
 ///////////////////////////////////////////////////////
 // Outputs: (by reference)
 //	    unew, new solution vector
-//
-///////////////////////////////////////////////////////
-// Functions Called: step
 //
 ///////////////////////////////////////////////////////
 // Called By: ridc_be
@@ -935,21 +910,7 @@ void corr_be(ODE * ode,
     }
   }
 
-  /*
-  for (int i =0; i<param.neq; i++) {
-    printf("%g\n",uold[i]);
-  }
-  */
-  
-
-  //step<PARAMETER>(t, uold, param, unew);
   ode->step(t,uold,unew);
   
-  /*
-  for (int i =0; i<param.neq; i++) {
-    printf("%g\n",unew[i]);
-  }
-  */
-
 
 } // end corr_be
