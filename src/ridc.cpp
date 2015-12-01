@@ -291,7 +291,7 @@ void ridc_fe(ODE * ode, int order, double *sol) {
   delete [] fnew;
 
   for (int p=0; p<order; p++)
-    delete filter[p];
+    delete [] filter[p];
   delete [] filter;
 
   for (int p=0; p<order; p++) {
@@ -614,7 +614,7 @@ void ridc_be(ODE * ode, int order, double *sol) {
   delete [] fnew;
 
   for (int p=0; p<order; p++)
-    delete filter[p];
+    delete [] filter[p];
   delete filter;
 
   for (int p=0; p<order; p++) {

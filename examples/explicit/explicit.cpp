@@ -69,4 +69,5 @@ int main(int argc, char *argv[]) {
   for (int i = 0; i < neq; i++)
     printf("%14.12f\n", sol[i]);
   delete [] sol;
+  delete ode;
 }
