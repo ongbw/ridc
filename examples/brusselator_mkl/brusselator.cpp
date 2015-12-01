@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
   double *sol;
 
   if (argc != 4) {
-    printf("usage: <executable> <order> <nt>  >  output_file\n");
+    printf("usage: <executable> <order> <nt> <neq> >  output_file\n");
     fflush(stdout);
     exit(1);
   } else {

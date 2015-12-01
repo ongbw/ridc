@@ -72,5 +72,5 @@ int main(int argc, char *argv[]) {
     printf("%14.12f\n", sol[i]);
   delete [] sol;
 
-  delete [] ode;
+  delete ode;
 }
