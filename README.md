@@ -1,5 +1,5 @@
-ridc
-====
+About RIDC
+==========
 
 Revisionist Integral Deferred Correction methods -- a family of high-order, parallel time-integrators.
 
