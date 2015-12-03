@@ -1,7 +1,6 @@
-# Building and Installing                                                {#page_building_installing}
+# Building and Installing                                               
 
-## Prerequesites
-
+## Prerequisites
 
 There are no prerequisites for building the base RIDC software and
 examples in `explicit/` and `implicit/`.  To build the example in
