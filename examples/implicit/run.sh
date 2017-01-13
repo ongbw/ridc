@@ -2,7 +2,7 @@
 
 ORDER=4
 EXE=implicit
-export OMP_THREADS=${ORDER}
+export OMP_NUM_THREADS=${ORDER}
 
 # convergence study
 STEPS=10

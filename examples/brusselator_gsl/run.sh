@@ -3,7 +3,7 @@
 ORDER=4
 EXE=brusselator_gsl
 Nx=100
-export OMP_THREADS=${ORDER}
+export OMP_NUM_THREADS=${ORDER}
 
 # convergence study
 STEPS=100
